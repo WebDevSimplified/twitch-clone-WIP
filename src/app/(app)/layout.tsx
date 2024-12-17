@@ -1,4 +1,5 @@
-import { SignedIn, UserButton } from "@clerk/nextjs"
+import { Button } from "@/components/ui/button"
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import Link from "next/link"
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -34,6 +35,11 @@ function NavBar() {
             />
           </div>
         </SignedIn>
+        <SignedOut>
+          <Button asChild>
+            <Link href="/sign-in">Sign In</Link>
+          </Button>
+        </SignedOut>
       </nav>
     </header>
   )

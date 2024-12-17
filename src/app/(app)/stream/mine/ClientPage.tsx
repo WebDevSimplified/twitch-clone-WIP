@@ -1,6 +1,7 @@
 "use client"
 
 import { updateStreamSettings } from "@/actions/stream"
+import { CopyButton } from "@/components/CopyButton"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -59,12 +60,12 @@ export function MyStreamClientPage({
   )
 
   const call = useMemo(
-    () => videoClient?.call("livestream", userId),
+    () => videoClient.call("livestream", userId),
     [userId, videoClient]
   )
 
   useEffect(() => {
-    call?.join()
+    call.join()
 
     return () => {
       call.leave()
@@ -151,12 +152,23 @@ function LiveStreamView({
           defaultTitle={callTitle}
           defaultDescription={callDescription}
         />
-
+        <CopyButton
+          variant="outline"
+          textToCopy={`${window.origin}/stream/${call.id}`}
+        >
+          Copy Stream URL
+        </CopyButton>
         <Button
           className="ml-auto"
           size="lg"
           variant={isLive ? "destructive" : "default"}
-          onClick={() => (isLive ? call.stopLive() : call.goLive())}
+          onClick={() => {
+            if (isLive) {
+              call.stopLive()
+            } else {
+              call.goLive()
+            }
+          }}
         >
           {isLive ? "Stop Live" : "Go Live"}
         </Button>

@@ -8,7 +8,7 @@ export default async function YourStreamPage() {
   const user = await currentUser()
   if (user == null) return unauthorized()
 
-  const token = await streamClient.generateUserToken({ user_id: user.id })
+  const token = streamClient.generateUserToken({ user_id: user.id })
   const { call } = await streamClient.video
     .call("livestream", user.id)
     .getOrCreate({
