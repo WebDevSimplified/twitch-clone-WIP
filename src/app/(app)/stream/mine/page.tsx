@@ -1,5 +1,5 @@
 import { streamClient } from "@/lib/stream"
-import { currentUser } from "@clerk/nextjs/server"
+import { clerkClient, currentUser } from "@clerk/nextjs/server"
 import { unauthorized } from "next/navigation"
 import { MyStreamClientPage } from "./ClientPage"
 import { ClientOnly } from "@/components/ClientOnly"
@@ -14,7 +14,9 @@ export default async function YourStreamPage() {
     .getOrCreate({
       data: {
         created_by_id: user.id,
-        custom: { title: `${user.fullName}'s Stream` },
+        custom: {
+          title: `${user.fullName}'s Stream`,
+        },
       },
     })
 

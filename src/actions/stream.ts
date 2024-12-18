@@ -17,6 +17,7 @@ export async function updateStreamSettings(
   if (!success) return { error: true, message: "Invalid data" }
 
   try {
+    // TODO: May need to add user information
     await streamClient.video.updateCall({
       custom: data,
       type: "livestream",

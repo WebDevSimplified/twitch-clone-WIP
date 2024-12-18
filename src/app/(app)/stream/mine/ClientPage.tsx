@@ -2,6 +2,10 @@
 
 import { updateStreamSettings } from "@/actions/stream"
 import { CopyButton } from "@/components/CopyButton"
+import {
+  MicrophoneToggleButton,
+  VideoToggleButton,
+} from "@/components/DeviceButtons"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -31,7 +35,6 @@ import {
   StreamVideoClient,
   useCallStateHooks,
 } from "@stream-io/video-react-sdk"
-import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -97,28 +100,8 @@ function LiveStreamView({
   callTitle: string
   callDescription: string | undefined
 }) {
-  const {
-    useCameraState,
-    useMicrophoneState,
-    useParticipantCount,
-    useIsCallLive,
-    useParticipants,
-  } = useCallStateHooks()
-
-  const {
-    camera: cam,
-    isEnabled: camEnabled,
-    optimisticStatus: camOptimisticStatus,
-    devices: camDevices,
-    selectedDevice: camSelectedDevice,
-  } = useCameraState()
-  const {
-    microphone: mic,
-    isEnabled: micEnabled,
-    optimisticStatus: micOptimisticStatus,
-    devices: micDevices,
-    selectedDevice: micSelectedDevice,
-  } = useMicrophoneState()
+  const { useParticipantCount, useIsCallLive, useParticipants } =
+    useCallStateHooks()
 
   const participantCount = useParticipantCount()
   const isLive = useIsCallLive()
@@ -131,20 +114,8 @@ function LiveStreamView({
     <div className="flex gap-2 flex-col">
       <div>{isLive ? `Live: ${participantCount - 1}` : `Preview`}</div>
       <div className="flex gap-2">
-        <DeviceButton
-          toggle={() => cam.toggle()}
-          isEnabled={camEnabled}
-          isOptimisticEnabled={camOptimisticStatus === "enabled"}
-          OffIcon={VideoOffIcon}
-          OnIcon={VideoIcon}
-        />
-        <DeviceButton
-          toggle={() => mic.toggle()}
-          isEnabled={micEnabled}
-          isOptimisticEnabled={micOptimisticStatus === "enabled"}
-          OffIcon={MicOffIcon}
-          OnIcon={MicIcon}
-        />
+        <VideoToggleButton />
+        <MicrophoneToggleButton />
         <Button variant="outline" onClick={() => setShowVideoPreview(p => !p)}>
           {showVideoPreview ? "Hide Video Preview" : "Show Video Preview"}
         </Button>
@@ -180,30 +151,6 @@ function LiveStreamView({
         />
       )}
     </div>
-  )
-}
-
-function DeviceButton({
-  isEnabled,
-  isOptimisticEnabled,
-  toggle,
-  OnIcon,
-  OffIcon,
-}: {
-  isEnabled: boolean
-  isOptimisticEnabled: boolean
-  toggle: () => Promise<void>
-  OnIcon: React.ComponentType
-  OffIcon: React.ComponentType
-}) {
-  return (
-    <Button
-      disabled={isEnabled !== isOptimisticEnabled}
-      variant={isOptimisticEnabled ? "outline" : "destructive"}
-      onClick={toggle}
-    >
-      {isOptimisticEnabled ? <OnIcon /> : <OffIcon />}
-    </Button>
   )
 }
 

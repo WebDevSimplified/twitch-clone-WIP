@@ -1,5 +1,5 @@
 import { streamClient } from "@/lib/stream"
-import { currentUser } from "@clerk/nextjs/server"
+import { clerkClient, currentUser } from "@clerk/nextjs/server"
 import { UserStreamClientPage } from "./ClientPage"
 
 export default async function UserStreamPage({
@@ -7,8 +7,11 @@ export default async function UserStreamPage({
 }: {
   params: Promise<{ callId: string }>
 }) {
+  // TODO: Parallelize
   const user = await currentUser()
   const { callId } = await params
+  const callUser = await (await clerkClient()).users.getUser(callId)
+
   const { streamUser, token } = getStreamUserAndToken(user)
   const {
     calls: [data],
@@ -25,6 +28,7 @@ export default async function UserStreamPage({
       callDescription={call.custom.description}
       callTitle={call.custom.title}
       callId={call.id}
+      callUser={{ imageUrl: callUser.imageUrl, fullName: callUser.fullName }}
       streamUser={streamUser}
       token={token}
     />
