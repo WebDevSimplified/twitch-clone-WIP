@@ -72,8 +72,9 @@ export function MyStreamClientPage({
 
     return () => {
       call.leave()
+      call.stopLive()
     }
-  }, [call, userName])
+  }, [call])
 
   return (
     // TODO: Maybe remove theme
@@ -146,6 +147,7 @@ function LiveStreamView({
       </div>
       {firstParticipant && showVideoPreview && (
         <ParticipantView
+          mirror={false}
           ParticipantViewUI={null}
           participant={firstParticipant}
         />

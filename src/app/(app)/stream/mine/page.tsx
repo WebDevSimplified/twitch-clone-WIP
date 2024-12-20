@@ -1,5 +1,5 @@
 import { streamClient } from "@/lib/stream"
-import { clerkClient, currentUser } from "@clerk/nextjs/server"
+import { currentUser } from "@clerk/nextjs/server"
 import { unauthorized } from "next/navigation"
 import { MyStreamClientPage } from "./ClientPage"
 import { ClientOnly } from "@/components/ClientOnly"

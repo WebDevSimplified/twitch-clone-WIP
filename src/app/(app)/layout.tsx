@@ -4,10 +4,10 @@ import Link from "next/link"
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="h-screen overflow-auto flex flex-col">
       <NavBar />
-      <main className="container py-4">{children}</main>
-    </>
+      <main className="container pt-4 pb-8 flex-grow">{children}</main>
+    </div>
   )
 }
 

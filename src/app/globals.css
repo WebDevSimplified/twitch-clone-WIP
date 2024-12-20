@@ -72,6 +72,11 @@ body {
   }
 }
 
-.str-video__device-settings {
-  font: inherit;
+.str-chat__list {
+  display: flex;
+  align-items: flex-end;
+}
+
+.str-chat__message-list-scroll {
+  width: 100%;
 }
